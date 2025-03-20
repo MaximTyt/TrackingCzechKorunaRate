@@ -1,0 +1,14 @@
+@TrackingCzechKorunaRate_HostAddress = http://localhost:5090
+
+
+POST {{TrackingCzechKorunaRate_HostAddress}}/api/rate/syncbyperiod?startDate=10.03.2025
+Accept: application/json
+###
+POST {{TrackingCzechKorunaRate_HostAddress}}/api/rate/syncbyperiod?startDate=01.02.2025&endDate=01.03.2025
+Accept: application/json
+###
+GET {{TrackingCzechKorunaRate_HostAddress}}/api/rate/report?startDate=10.03.2025&endDate=18.03.2025&currencies=&currencies=USD&currencies=EUR
+Accept: application/json
+###
+GET {{TrackingCzechKorunaRate_HostAddress}}/api/rate/report?startDate=17.03.2025&currencies=ZND&currencies=CNY&currencies=USD&currencies=EUR
+Accept: application/json

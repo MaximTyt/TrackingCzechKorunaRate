@@ -1,0 +1,9 @@
+{
+  "SyncBySchedule": {
+    "Currencies": [ "CNY", "USD", "EUR" ],
+    "CronSсhedule": "0 0/2 * * * ?"
+  },
+  "SyncByPeriod": {
+    "Currencies": [ "NZD", "USD", "EUR" ]
+  }
+}
