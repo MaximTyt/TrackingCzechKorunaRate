@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Models.Model;
-using Mapper;
-using Services.Service.Abstract;
-using System.Collections.Generic;
-using Settings;
+﻿using Mapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Models.Model;
+using Services.Service.Abstract;
+using Settings;
 
 namespace TrackingCzechKorunaRate.Controllers
 {
@@ -13,23 +12,19 @@ namespace TrackingCzechKorunaRate.Controllers
     public class RateController : Controller
     {
         private IRateService _rate;
-        private readonly SyncByPeriodSetting _syncByPeriodSetting;        
-        public RateController(IRateService rate, IOptionsMonitor<SyncByPeriodSetting> syncByPeriodSetting)
+        private readonly SyncSetting _syncSetting;        
+        public RateController(IRateService rate, IOptionsMonitor<SyncSetting> syncSetting)
         {
             _rate = rate;
-            _syncByPeriodSetting = syncByPeriodSetting.CurrentValue;
+            _syncSetting = syncSetting.CurrentValue;
         }
 
         [HttpPost("syncbyperiod")]
         public void SyncByPeriod(string startDate, string endDate = "")
         {
             endDate = endDate == "" ? DateTime.UtcNow.ToShortDateString() : endDate;
-            _rate.SyncByPeriodAsync(startDate, endDate, _syncByPeriodSetting.Currencies);
-        }
-        //public void SyncByPeriod([FromBody] SyncByPeriodModel date)
-        //{
-        //    _rate.SyncByPeriodAsync(date.startDate, date.endDate);
-        //}
+            _rate.SyncByPeriodAsync(startDate, endDate, _syncSetting.Currencies);
+        }        
 
         [HttpGet("report")]
         public async Task<IEnumerable<ReportModel>> GetReportAsync(string startDate, string endDate, [FromQuery] IEnumerable<string> currencies)

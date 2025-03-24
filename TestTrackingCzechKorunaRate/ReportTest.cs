@@ -1,18 +1,4 @@
-﻿using Data.Repositories.Abstract;
-using Data.Repositories.Implementation;
-using Domain.DTO;
-using Entities.Entity;
-using Entities.Entity.EF;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Models.Model;
-using Moq;
-using Services.Service.Abstract;
-using Services.Service.Implementation;
-using Settings;
-using System;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TrackingCzechKorunaRate.Controllers;
 
 namespace TestTrackingCzechKorunaRate

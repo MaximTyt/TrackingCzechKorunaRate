@@ -8,10 +8,10 @@ namespace TrackingCzechKorunaRate.Jobs
 {
     public class SyncByScheduleJob : IJob
     {
-        private readonly SyncByScheduleSetting _syncSettings;
+        private readonly SyncSetting _syncSettings;
         private readonly IRateService _rate;
         private readonly ILogger<SyncByScheduleJob> _logger;
-        public SyncByScheduleJob(ILogger<SyncByScheduleJob> logger, IOptionsMonitor<SyncByScheduleSetting> syncSettings, IRateService rate)
+        public SyncByScheduleJob(ILogger<SyncByScheduleJob> logger, IOptionsMonitor<SyncSetting> syncSettings, IRateService rate)
         {
             _logger = logger;
             _syncSettings = syncSettings.CurrentValue;

@@ -1,9 +1,9 @@
 {
-  "SyncBySchedule": {
-    "Currencies": [ "CNY", "USD", "EUR" ],
+  "SyncSetting": {
+    "Currencies": [ "NZD", "USD", "CNY" ],
     "CronSсhedule": "0 0/2 * * * ?"
   },
-  "SyncByPeriod": {
-    "Currencies": [ "NZD", "USD", "EUR" ]
+  "BaseAddress": {
+    "BaseAddressURI": "https://www.cnb.cz/en/financial_markets/foreign_exchange_market/exchange_rate_fixing/daily.txt"
   }
 }

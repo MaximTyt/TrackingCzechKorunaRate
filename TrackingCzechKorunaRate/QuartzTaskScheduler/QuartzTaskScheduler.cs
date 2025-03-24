@@ -8,11 +8,11 @@ namespace TrackingCzechKorunaRate.QuartzTaskScheduler
     public class QuartzTaskScheduler
     {
         private readonly IScheduler _scheduler;
-        private readonly IOptionsMonitor<SyncByScheduleSetting> _syncSettings;
+        private readonly IOptionsMonitor<SyncSetting> _syncSettings;
         private readonly JobKey _jobKey;
         private readonly TriggerKey _triggerKey;
 
-        public QuartzTaskScheduler(ISchedulerFactory schedulerFactory, IOptionsMonitor<SyncByScheduleSetting> syncSettings)
+        public QuartzTaskScheduler(ISchedulerFactory schedulerFactory, IOptionsMonitor<SyncSetting> syncSettings)
         {            
             _syncSettings = syncSettings;
             _jobKey = new JobKey("CurrencySyncJob");
@@ -49,7 +49,7 @@ namespace TrackingCzechKorunaRate.QuartzTaskScheduler
                 .Build();
         }
 
-        private async void ReloadTrigger(SyncByScheduleSetting settings)
+        private async void ReloadTrigger(SyncSetting settings)
         {
             // Удаление старого триггера
             await _scheduler.UnscheduleJob(_triggerKey);

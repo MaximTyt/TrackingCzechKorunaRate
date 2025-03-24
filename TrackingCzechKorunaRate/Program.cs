@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using Services;
+using Services.Utils;
 using Settings;
 using TrackingCzechKorunaRate.Jobs;
 using TrackingCzechKorunaRate.QuartzTaskScheduler;
@@ -19,11 +20,11 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
-//var _confstring = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-//var connectionString = _confstring.GetConnectionString("DefaultConnection");
+
 // Add services to the container.
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory() + "/Config").AddJsonFile("appsettings.json").AddJsonFile("config.json", optional: true, reloadOnChange: true).Build();
-//var _confstring = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory() + "/Config").AddJsonFile("appsettings.json").AddJsonFile("config.json", optional: true, reloadOnChange: true).Build();
+
+
 //Настройка логгера
 builder.Logging.ClearProviders();
 builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory() + "/Log", "logger.log"));
@@ -41,24 +42,8 @@ builder.Services.AddBusinessLogic();
 
 
 // Регистрация конфигурации
-builder.Services.Configure<SyncByScheduleSetting>(builder.Configuration.GetSection("SyncBySchedule"));
-builder.Services.Configure<SyncByPeriodSetting>(builder.Configuration.GetSection("SyncByPeriod"));
-
-// Регистрация Quartz.NET
-//builder.Services.AddQuartz(q =>
-//{  
-//    // Создание задачи
-//    var jobKey = new JobKey("SyncBySheduleJob");
-//    q.AddJob<SyncByScheduleJob>(opts => opts.WithIdentity(jobKey));
-//    var CronSchedule = builder.Configuration.GetSection("SyncBySchedule:CronSсhedule").Value;
-//    // Настройка триггера
-//    q.AddTrigger(opts => opts
-//        .ForJob(jobKey)
-//        .WithIdentity("CurrencySyncTrigger")
-//        .WithCronSchedule(CronSchedule));
-//});
-
-//builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+builder.Services.Configure<SyncSetting>(builder.Configuration.GetSection("SyncSetting"));
+builder.Services.Configure<BaseAddressSetting>(builder.Configuration.GetSection("BaseAddress"));
 
 builder.Services.AddQuartz(q =>
 {
@@ -81,12 +66,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 var app = builder.Build();
 app.UseCors("AllowAll");
-// Configure the HTTP request pipeline.
+
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI(options => // UseSwaggerUI is called only in Development.
+    app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;

@@ -1,17 +1,13 @@
 ﻿using Data.Repositories.Abstract;
 using Data.Repositories.Implementation;
-using Entities.Entity.EF;
 using Entities.Entity;
-using Microsoft.Extensions.DependencyInjection;
-using Services.Service.Abstract;
-using Services.Service.Implementation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TrackingCzechKorunaRate.Controllers;
+using Entities.Entity.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Services;
+using Services.Utils;
+using TrackingCzechKorunaRate.Controllers;
 
 namespace TestTrackingCzechKorunaRate
 {
@@ -24,12 +20,19 @@ namespace TestTrackingCzechKorunaRate
             {
                 options.UseInMemoryDatabase("TestDatabase");
             });
+            //Регистрация конфигурации
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory() + "../../../../../TrackingCzechKorunaRate/Config")
+                .AddJsonFile("config.json")
+                .Build();
+            services.Configure<BaseAddressSetting>(configuration.GetSection("BaseAddress"));
+
             // Регистрация сервисов
             services.AddTransient<IRepository<RateEntity>, RateRepository>();
-            services.AddTransient<IRateService, RateService>();
+            services.AddBusinessLogic();
             services.AddScoped<RateController>();
             services.AddLogging();
-            var serviceProvider = services.BuildServiceProvider();            
+            var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
     }
